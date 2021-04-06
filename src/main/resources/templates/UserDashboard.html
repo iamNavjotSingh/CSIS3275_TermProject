@@ -1,0 +1,344 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="shortcut icon" th:href="@{/images/ttn.ico}"/>
+    <title>REAP</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css}">
+    <script th:src="@{//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js}"></script>
+    <script th:src="@{//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <!--<link rel="stylesheet" type="text/css" href="DashboardStyles.css">-->
+    <link rel="stylesheet" th:href="@{'/css/userDashboard/Dashboard.css'}"/>
+    <link href="../css/logout/Logoutcss.css" rel="stylesheet" type="text/css" />
+    <script src="../javascripts/login.js"></script>
+
+    <script>
+    $(document).ready(function(){
+        $('#daterange').daterangepicker(function(start, end, label) {
+            $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+        });
+        $('#daterange').val($('#daterange').attr("placeholder"));
+        $('#daterange').on('cancel.daterangepicker', function(ev, picker) {
+            $('#daterange').val('');
+        });
+        $("#filter").on("click", function () {
+            event.preventDefault();
+            var daterange = $('#daterange').val();
+            console.log(daterange);
+            $.ajax({
+                url: "/verifyDateFilter",
+                method: "post",
+                data: {"date": daterange},
+
+                success: function (data) {
+                    if(data==1)
+                    {
+                        location.assign("/filterdate")
+                    }
+                    if(data==0)
+                    {
+                        alert("please enter date for filtering date");
+                    }
+                }
+            });
+        });
+        $("#recognize").on("click", function () {
+            event.preventDefault();
+            var email = $('#newer option:selected').val();
+            var bagdeType=$('#badge option:selected').val();
+            var karma=$('#karma option:selected').val();
+            var message=$('#comment').val();
+            console.log(email);
+            console.log(message);
+            $.ajax({
+                url: "/recognition",
+                method: "post",
+                data: {"email": email,"bagdeType":bagdeType,"karma":karma,"message":message},
+
+                success: function (data) {
+                    if(data==2)
+                    {
+                        alert("successfully given recognition");
+                        location.assign("/logindata");
+                    }
+                    if(data==1)
+                    {
+                        alert("Session has expire kindly login again");
+                        location.assign("/");
+                    }
+                    if(data==3)
+                    {
+                        alert("email id not exists");
+                    }
+                }
+            });
+        });
+
+
+    });
+</script>
+
+</head>
+
+<body th:if="session.emailId">
+
+<!-- NAVBAR- -->
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav pull-left">
+                <a href="#"><img th:src="@{/images/logo.png}" id="logo"></a>
+                <a href="#"><img th:src="@{/images/reap2.png}" id="logo2"></a>
+            </ul>
+
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav dropdown">
+                <li><a href="#" class="active2">Back to Newers World</a></li>
+                <li><a href="#" class="active1"><img th:src="@{/images/timer.png}"> Dashboard</a></li>
+                <li><a th:href="@{/Badges}" class="active2"><img th:src="@{/images/star.png}" height="20px" width="20px"> Badges</a>
+                </li>
+                <li><a th:href="@{/redeem}" class="active2"> <img th:src="@{/images/certi.png}" height="20px" width="20px">
+                    Redeem</a></li>
+                <!-- 	<li><a href="#"> <img src="bell.png" height="25px" width="20px " id="bell"> </a></li> -->
+                <li><a><button class="buttonlogout" onclick="document.getElementById('id01').style.display='block'"><img th:src="${session.image}"  height="45px" width="45px"></button></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!--logout-->
+<div id="id01" class="modal">
+
+    <form class="modal-content animate" th:action="@{/logout}" method="post">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <img th:src="${session.image}" height="230px" width="230px" class="avatar">
+        </div>
+
+        <div class="container">
+            <label><b>Email:</b></label>
+            <!--/*@thymesVar id="emailId" type="java"*/-->
+            <h3 th:text="${session.emailId}" id="loginText"></h3>
+
+            <label><b>Name:</b></label>
+            <h3 th:text="${session.name}" id="paswordText"></h3>
+
+            <button class="buttonlogout1" type="submit">Logout</button>
+
+        </div>
+    </form>
+</div>
+
+<!--logoutends-->
+
+
+
+
+
+
+
+
+
+
+<div class="row" id="first">
+
+    <!-- left horizontal div  recoginze-->
+    <div id="second1">
+        <div class="headerdiv">
+            <span class="headerfont"><img th:src="@{/images/star.png}">  RECOGNIZE NEWER</span>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+
+                <form>
+
+
+                    <div class="col-lg-4 col-md-4 ">
+
+
+                        <select class="select-newer" required="required" placeholder="Select a Newer" id="newer" th:name="userEmail">
+                            <option disabled="disabled">Select a Newer</option>
+                            <option class="email" th:each="result,iterStat:${session.list}" th:value="${result.email}" >
+                                <i th:text="${result.email}"></i>
+                            </option>
+                        </select>
+
+                        <div class="search-container">
+                            <!--<form action="/action_page.php">-->
+                            <!--</form>-->
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-3">
+
+                        <select th:name="badgeType" required="required" id="badge" >
+                            <option disabled="disabled">Please Select Badge</option>
+                            <option value="Gold" style="background-color:goldenrod;" th:if="${gold}>0">Gold</option>
+                            <option value="Silver" style="background-color: silver;" th:if="${silver}>0">Silver</option>
+                            <option value="Bronze" style="background-color: firebrick;" th:if="${bronze}>0">Bronze</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 ">
+
+                        <select class="form-control" required="required"  id="karma" th:name="karma">
+                            <option disabled="disabled">Select a Karma/Core Value</option>
+                            <option value="Karma: Extra Miler">Karma: Extra Miler</option>
+                            <option value="Karma: Knowledge Sharing">Karma: Knowledge Sharing</option>
+                            <option value="Karma: Mentorship">Karma: Mentorship</option>
+                            <option value="Karma: Pat on the back">Karma: Pat on the back</option>
+                            <option value="Karma: Customer Delight">Karma: Customer Delight</option>
+                            <option value="Core Value: Continuous Learning and Improvement">Core Value: Continuous Learning and Improvement</option>
+                            <option value="Core Value: Contribution">Core Value: Contribution</option>
+                            <option value="Core Value: Diligence">Core Value: Diligence</option>
+                            <option value="Core Value: Empathy">Core Value: Empathy</option>
+                            <option value="Core Value: Openness to Feedback and Change">Core Value: Openness to Feedback and Change</option>
+                            <option value="Core Value: Responsible Freedom">Core Value: Responsible Freedom</option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group col-lg-12 col-md-12 karma-description">
+                        <br><br>
+                        <label for="comment">Reason:</label>
+                        <textarea class="form-control" rows="5" id="comment" required="required"></textarea>
+                    </div>
+
+                    <div class="panel-footer" style="height: 40px">
+                        <div class="form-group">
+                            <button id="recognize" type="submit" class="btn btn-primary">Recognize</button>
+                        </div>
+                    </div>
+
+                </form>
+
+
+            </div>
+        </div>
+
+        <!--<input class="btn btn-primary" type="submit" name="submit" value="Recognize" class="recognize" id="submit">-->
+
+    </div>
+
+    <!-- right horizontal div -->
+    <div id="third">
+        <div class="headerdiv">
+            <span class="headerfont"> <img th:src="@{/images/star.png}">  MY BADGES</span>
+        </div>
+
+        <center>
+            <div class="panel panel-primary" style="border:none;">
+
+                <div class="panel-body">
+                    <div class="badge-content">
+                        <div class="badge-content-left">
+                            <img th:src="${session.image}" height="230px" width="230px" alt="">
+                        </div>
+
+                        <div class="badge-content-right">
+                            <!--/*@thymesVar id="user" type="java"*/-->
+                            <h4 id="mybadge1" ><a href="#" class="newer_board_user" data-renderedthrough="rightPanel" th:text="${session.name}">
+
+                            </a></h4>
+                            <span>
+                            <img th:src="@{/images/goldstar.png}" alt="">
+                            <i th:text="${gold}"></i>
+                        </span>
+                            <span>
+                            <img th:src="@{/images/silverstar.png}" alt="">
+                            <i th:text="${silver}"></i>
+                         </span>
+                            <span>
+                            <img th:src="@{/images/bronzestar.png}" alt="">
+                            <i th:text="${bronze}"></i>
+                        </span>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </center>
+    </div>
+    <div id="second">
+        <div class="headerdiv">
+            <span class="headerfont"><img th:src="@{/images/star.png}">  WALL OF FAME</span>
+
+            <form class="navbar-form navbar-right"  style="margin-right: 10px;">
+                <input type="text" class="form-control" placeholder="Search" name="search">
+                <div class="input-group">
+                    <div class="input-group-btn">
+
+                    </div>
+                </div>
+                <input type="text" id="daterange" class="form-control" placeholder=" Select Date Range" name="date" required >
+
+                <button id="filter" class="btn btn-primary" ><span
+                        class="glyphicon glyphicon-calendar" type="submit">Filter</span>
+                </button>
+
+            </form>
+        </div>
+        <div style="overflow: auto;height: 300px;width: 100%">
+            <div th:each="result,iterStat:${recognitionlist}" id="styleRecognize" style="width: 100%;height: 60px;">
+                <!--/*@thymesVar id="user" type="java"*/-->
+                <b name="email" th:text="${result.getUserEmail()}"></b>
+                has received<img th:if="${result.getBadgeType().equals('Gold')}" th:src="@{/images/goldstar.png}">
+                <img th:if="${result.getBadgeType().equals('Bronze')}" th:src="@{/images/bronzestar.png}">
+                <img th:if="${result.getBadgeType().equals('Silver')}" th:src="@{/images/silverstar.png}"> from
+                <b th:text="${result.getRegistration().getFirstName()+' '+result.getRegistration().getLastName()}"></b>
+                for<b th:text="${result.getKarma()}"></b>Reason:<b th:text="${result.getMessage()}"></b><br><br>
+                <hr id="horizontal">
+            </div>
+        </div>
+
+        </div>
+
+
+        </div>
+    </div>
+
+<!--  <script type="text/javascript" src="reap.js"></script>
+-->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+<!--<div class="col-lg-4 col-md-4">
+    <input type="text" class="select-newer"
+           placeholder="Select a Newer"
+           required="required" id="newer" autocomplete="on">
+
+    <span class="select-newer" autocomplete="on">
+              <img th:src="@{/images/newer.png}" alt="">
+            </span>
+</div>-->

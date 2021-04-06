@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="shortcut icon" th:href="@{/images/ttn.ico}"/>
+    <title>REAP</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css}">
+    <script th:src="@{//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js}"></script>
+    <script th:src="@{//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <!--<link rel="stylesheet" type="text/css" href="DashboardStyles.css">-->
+    <link rel="stylesheet" th:href="@{'/css/userDashboard/Dashboard.css'}"/>
+    <link href="../css/logout/Logoutcss.css" rel="stylesheet" type="text/css" />
+    <script src="../javascripts/login.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".line-content").show();
+            $(".line-content2").hide();
+            $(".line-content3").hide();
+            $(".line-content4").hide();
+
+            $("#d1").click(function() {
+                $(".line-content").show();
+                $(".line-content2").hide();
+                $(".line-content3").hide();
+                $(".line-content4").hide();
+            });
+            $("#d2").click(function() {
+
+                $(".line-content2").show();
+                $(".line-content").hide();
+                $(".line-content3").hide();
+                $(".line-content4").hide();
+            });
+            $("#d3").click(function() {
+
+                $(".line-content3").show();
+                $(".line-content2").hide();
+                $(".line-content").hide();
+                $(".line-content4").hide();
+            });
+            $("#d4").click(function() {
+                $(".line-content4").show();
+                $(".line-content2").hide();
+                $(".line-content").hide();
+                $(".line-content3").hide();
+            });
+        });
+
+    </script>
+
+</head>
+
+<body th:if="session.emailId">
+
+<!-- NAVBAR- -->
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav pull-left">
+                <a href="#"><img th:src="@{/images/logo.png}" id="logo"></a>
+                <a href="#"><img th:src="@{/images/reap2.png}" id="logo2"></a>
+            </ul>
+
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav dropdown">
+                <li><a href="#" class="active2">Back to Newers World</a></li>
+                <li><a th:href="@{/logindata}" class="active1"><img th:src="@{/images/timer.png}"> Dashboard</a></li>
+                <li><a href="#" class="active2"><img th:src="@{/images/star.png}" height="20px" width="20px"> Badges</a>
+                </li>
+                <li><a th:href="@{/redeem}" class="active2"> <img th:src="@{/images/certi.png}" height="20px" width="20px">
+                    Redeem</a></li>
+                <!-- 	<li><a href="#"> <img src="bell.png" height="25px" width="20px " id="bell"> </a></li> -->
+                <li><a><button class="buttonlogout" onclick="document.getElementById('id01').style.display='block'"><img th:src="${session.image}"  height="45px" width="45px"></button></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!--logout-->
+<div id="id01" class="modal">
+
+    <form class="modal-content animate" th:action="@{/logout}" method="post">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <img th:src="${session.image}" height="230px" width="230px" class="avatar">
+        </div>
+
+        <div class="container">
+            <label><b>Email:</b></label>
+            <!--/*@thymesVar id="emailId" type="java"*/-->
+            <h3 th:text="${session.emailId}" id="loginText"></h3>
+
+            <label><b>Name:</b></label>
+            <h3 th:text="${session.name}" id="paswordText"></h3>
+
+            <button class="buttonlogout1" type="submit">Logout</button>
+
+        </div>
+    </form>
+</div>
+
+<!--logoutends-->
+    <!-- right horizontal div -->
+    <div id="third" style="margin-top:120px !important;">
+        <div class="headerdiv">
+            <span class="headerfont"> <img th:src="@{/images/star.png}">  MY BADGES</span>
+        </div>
+
+        <center>
+            <div class="panel panel-primary" style="border:none;">
+
+                <div class="panel-body">
+                    <div class="badge-content">
+                        <div class="badge-content-left">
+                            <img th:src="${session.image}" height="230px" width="230px" alt="">
+                        </div>
+
+                        <div class="badge-content-right">
+                            <!--/*@thymesVar id="user" type="java"*/-->
+                            <h4 id="mybadge1" ><a href="#" class="newer_board_user" data-renderedthrough="rightPanel" th:text="${session.name}">
+
+                            </a></h4>
+                            <span>
+                            <img th:src="@{/images/goldstar.png}" alt="">
+                            <i th:text="${earnedGold}"></i>
+                        </span>
+                            <span>
+                            <img th:src="@{/images/silverstar.png}" alt="">
+                            <i th:text="${earnedSilver}"></i>
+                         </span>
+                            <span>
+                            <img th:src="@{/images/bronzestar.png}" alt="">
+                            <i th:text="${earnedBronze}"></i>
+                        </span>
+                            <br>
+                            <center>Points:<b th:text="${points}"></b></center>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </center>
+    </div>
+<div id="second" style="margin-top:120px !important;">
+    <div class="headerdiv">
+        <button id="d1" class="navbar-form navbar-right"  style="margin-right:10px;"><span
+                    class="glyphicon glyphicon-star">All</span>
+            </button>
+        <button id="d2" class="navbar-form navbar-right"  style="margin-right:40px;" ><span
+                    class="glyphicon glyphicon-share">Badges Shared</span>
+            </button>
+            <button id="d3"  class="navbar-form navbar-right"  style="margin-right:70px;" ><span
+                    class="glyphicon glyphicon-check">Badges Received</span>
+            </button>
+        <button id="d4" class="navbar-form navbar-right"  style="margin-right:80px;" ><span
+                    class="glyphicon glyphicon-gift">Points Redeemed</span>
+            </button>
+    </div>
+
+
+
+
+    <div class="line-content" style="overflow: scroll;height: 300px;width: 100%">
+        <div th:each="result,iterStat:${recognitionlist}" id="styleRecognize" style="width: 100%;height: 70px;">
+            <!--/*@thymesVar id="user" type="java"*/-->
+
+            <img th:src="${result.getRegistration().getImage()}">
+            <b th:text="${result.getUserEmail()}"></b>
+            has received <img th:if="${result.getBadgeType().equals('Gold')}" th:src="@{/images/goldstar.png}">
+            <img th:if="${result.getBadgeType().equals('Bronze')}" th:src="@{/images/bronzestar.png}">
+            <img th:if="${result.getBadgeType().equals('Silver')}" th:src="@{/images/silverstar.png}"> from
+             <b th:text="${result.getRegistration().getFirstName()+' '+result.getRegistration().getLastName()}"></b>
+            for <b th:text="${result.getKarma()}"></b><br>Reason:<b th:text="${result.getMessage()}"></b>
+            <hr id="horizontal">
+        </div>
+    </div>
+
+    <div class="line-content2" style="overflow: scroll;height: 300px;width: 100%">
+        <div th:each="result,iterStat:${sharedBadges}" id="styleRecognize1" style="width: 100%;height: 70px;">
+            <!--/*@thymesVar id="user" type="java"*/-->
+
+            <img th:src="${result.getRegistration().getImage()}">
+            <b th:text="${result.getUserEmail()}"></b>
+            has received <img th:if="${result.getBadgeType().equals('Gold')}" th:src="@{/images/goldstar.png}">
+            <img th:if="${result.getBadgeType().equals('Bronze')}" th:src="@{/images/bronzestar.png}">
+            <img th:if="${result.getBadgeType().equals('Silver')}" th:src="@{/images/silverstar.png}"> from
+            <b th:text="${result.getRegistration().getFirstName()+' '+result.getRegistration().getLastName()}"></b>
+            for <b th:text="${result.getKarma()}"></b><br>Reason:<b th:text="${result.getMessage()}"></b>
+            <hr id="horizontal2">
+        </div>
+    </div>
+
+    <div class="line-content3" style="overflow: scroll;height: 300px;width: 100%">
+        <div th:each="result,iterStat:${receivedBadges}" id="styleRecognize2" style="width: 100%;height: 70px;">
+            <!--/*@thymesVar id="user" type="java"*/-->
+
+            <img th:src="${result.getRegistration().getImage()}">
+            <b th:text="${result.getUserEmail()}"></b>
+            has received <img th:if="${result.getBadgeType().equals('Gold')}" th:src="@{/images/goldstar.png}">
+            <img th:if="${result.getBadgeType().equals('Bronze')}" th:src="@{/images/bronzestar.png}">
+            <img th:if="${result.getBadgeType().equals('Silver')}" th:src="@{/images/silverstar.png}"> from
+            <b th:text="${result.getRegistration().getFirstName()+' '+result.getRegistration().getLastName()}"></b>
+            for <b th:text="${result.getKarma()}"></b><br>Reason:<b th:text="${result.getMessage()}"></b>
+            <hr id="horizontal3">
+        </div>
+    </div>
+
+    <div class="line-content4" style="overflow: scroll;height: 300px;width: 100%">
+        <div th:each="result,iterStat:${redeempoints}" id="styleRecognize3" style="width: 100%;height: 70px;">
+            <!--/*@thymesVar id="user" type="java"*/-->
+
+            <img th:src="${result.getRegistration().image}">
+            <b th:text="${result.getProductName()}"></b>
+            has been purchased on <b th:text="${result.getDate()}"></b>
+            of price
+            <b th:text="${result.getProductPrice()}"></b>
+            <hr id="horizontal4">
+        </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+</div>
+
+<!--  <script type="text/javascript" src="reap.js"></script>
+-->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+<!--<div class="col-lg-4 col-md-4">
+    <input type="text" class="select-newer"
+           placeholder="Select a Newer"
+           required="required" id="newer" autocomplete="on">
+
+    <span class="select-newer" autocomplete="on">
+              <img th:src="@{/images/newer.png}" alt="">
+            </span>
+</div>-->

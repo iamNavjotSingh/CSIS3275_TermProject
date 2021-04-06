@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Registration</title>
+    <!-- Bootstrap Css -->
+    <link href="../css/registration/bootstrap.min.css" type="text/css" rel="Stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../css/registration/animate.css" />
+     <link rel="stylesheet" type="text/css" href="../css/registration/style.css" />
+     <link href="../css/registration/default.css" rel="stylesheet" type="text/css" />
+    <link href="../css/login/login.css" rel="stylesheet" type="text/css" />
+    <script src="../javascripts/login.js"></script>
+
+    <script th:src="@{//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js}"></script>
+    <script th:src="@{//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"/>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("Password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+        function registrationSubmit() {
+            window.alert("successfully submitted form");
+            document.getElementById("contact_form").reset();
+            return true;
+        }
+        $(document).ready(function() {
+            $("#login").on("click", function () {
+                event.preventDefault();
+                var email = $("#loginText").val();
+                var password = $("#paswordText").val();
+                console.log(email);
+                console.log(password);
+                $.ajax({
+                    url: "/verifydata",
+                    method:"post",
+                    data: {"email": email,"password":password},
+
+                    success: function (data) {
+                      if(data==1)
+                      {
+                          location.assign("/logindata")
+                      }
+                      if(data==2)
+                      {
+                          alert("you are not active user");
+                      }
+                      if(data==0)
+                      {
+                          alert("you have entered wrong password or email id");
+                      }
+
+                    },
+                    error:function (e) {
+                      alert("email id or password is incorrect");
+                    }
+                });
+            });
+            /*$("#form1").on("click", function () {
+                event.preventDefault();
+
+                var firstName=$("#first").val();
+                var lastName=$("#last").val();
+                var password=$("#Password").val();
+                var email = $("#email").val();
+                var image = $("#contact").val();
+                console.log(image);
+                console.log(email);
+                $.ajax({
+                    url: "/formdata",
+                    method:"post",
+                    enctype: "multipart/form-data",
+                    data: {"email": email,"password":password,"firstName":firstName,"lastName":lastName,"image":image},
+
+                    success: function (data) {
+                        if(data==1)
+                        {
+                            alert("success");
+                            location.reload(true);
+                        }
+                        else if(data==2)
+                        {
+                            alert("kindly enter all the fields");
+                        }
+                        else if(data==3)
+                        {
+                            alert("password should be of length 6 or more");
+                        }
+                        else if(data==4)
+                        {
+                            alert("firstname or lastname should be of length 2 or more");
+                        }
+                        else if(data==5)
+                        {
+                            alert("not valid email id");
+                        }
+                        else
+                        {
+                            alert("user already exists");
+                        }
+                    }
+                });
+            });*/
+        });
+    </script>
+</head>
+
+<body id="page-top scroll .navbar-custom" style="background-color:#f2f2f2" >
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+                
+                <a class="navbar-brand" href="/">
+                    <img class="logo" src="../images/Reap.png"  alt="" />
+                    <img class="logo2" src="../images/ReapImage2.png"  alt="" hspace="300" width="500"/>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+      <ul class="nav navbar-nav" style="margin-top: 30px">
+        <li><button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+        </li>
+        
+      </ul>
+            </div>
+
+            <!--login modal-->
+            <div id="id01" class="modal">
+
+                <form class="modal-content animate">
+                    <div class="imgcontainer">
+                        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <img src="../images/Reap.png" class="avatar">
+                    </div>
+
+                    <div class="container">
+                        <label><b>Email</b></label>
+                        <input id="loginText" th:type="text" placeholder="Enter Username" th:name="email" required>
+
+                        <label><b>Password</b></label>
+                        <input  id="paswordText" th:type="password" placeholder="Enter Password" th:name="password" required>
+
+                        <button type="submit" id="login">Login</button>
+                        <label>
+                            <input type="checkbox" checked="checked" name="remember"> Remember me
+                        </label>
+                    </div>
+
+                    <div class="container" style="background-color:#f1f1f1">
+                        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                        <span class="psw">Forgot <a th:href="@{forget}">password?</a></span>
+                    </div>
+
+
+                </form>
+            </div>
+            <!--login modal end-->
+
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+        <div class="container" style="padding-top:200px">
+
+            <form class="well form-horizontal" th:action="@{/formdata}" th:object="${registration}" enctype="multipart/form-data" method="post" id="contact_form">
+<fieldset>
+
+<!-- Form Name -->
+<legend><center><h2><b>Registration Form</b></h2></center></legend></br>
+
+<!-- Text input-->
+    <h3 th:if="${failed}" th:text="${failed}" style="text-align: center"></h3>
+    <h3 th:if="${success}" th:text="${success}" style="text-align: center"></h3>
+<div class="row">
+  <label class="col-md-4 control-label">First Name</label>
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon"><i class="fa fa-user-secret" aria-hidden="true"></i></span>
+  <input  th:type="text" th:name="firstName"  id="first" placeholder="First Name" class="form-control" required="required" minlength="2" maxlength="50"/>
+    </div>
+  </div>
+</div>
+
+<!-- Text input-->
+
+<div class="row">
+  <label class="col-md-4 control-label" >Last Name</label>
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon"><i class="fa fa-user-circle" aria-hidden="true"></i></span>
+  <input th:name="lastName"  id="last" placeholder="Last Name" class="form-control" maxlength="50" th:type="text" required="required" minlength="2"/>
+    </div>
+  </div>
+</div>
+
+<!-- Text input-->
+
+<div class="row">
+  <label class="col-md-4 control-label" >Password</label>
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+  <input th:name="password" placeholder="Password" class="form-control"  th:type="password"  id="Password" required="required" minlength="6"/>
+    </div>
+  </div>
+    <input type="checkbox" onclick="myFunction()">Show Password
+</div>
+<!-- Text input-->
+       <div class="row">
+  <label class="col-md-4 control-label">E-Mail</label>
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+  <input th:name="email" placeholder="E-Mail Address" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"  th:type="email"  id="email" required="required"/>
+    </div>
+  </div>
+</div>
+
+
+<!-- Text input-->
+
+<div class="row">
+  <label class="col-md-4 control-label">Photo</label>
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-camera" aria-hidden="true"></i></span>
+           <input th:name="image" placeholder="(639)" class="form-control" th:type="file" id="contact" accept="image/jpeg"/>
+    </div>
+  </div>
+</div>
+
+<!-- Button -->
+<div class="row">
+  <label class="col-md-4 control-label"></label>
+  <div class="col-md-4"></br>
+    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="submit" class="btn btn-warning" id="form1">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSUBMIT <span class="fa fa-paper-plane" aria-hidden="true"></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+</div>
+</body>
+</html>
+

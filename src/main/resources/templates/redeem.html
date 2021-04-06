@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="shortcut icon" th:href="@{/images/ttn.ico}"/>
+    <title>REAP</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script th:src="@{//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js}"></script>
+    <script th:src="@{//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <!--<link rel="stylesheet" type="text/css" href="DashboardStyles.css">-->
+    <link rel="stylesheet" th:href="@{'/css/userDashboard/Dashboard.css'}"/>
+    <link href="../css/logout/Logoutcss.css" rel="stylesheet" type="text/css" />
+    <script src="../javascripts/login.js"></script>
+    <script src="../javascripts/Redeem.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Create three equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 33%;
+            padding: 20px;
+            height: 200px; /* Should be removed. Only for demonstration */
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+
+<body th:if="session.emailId">
+
+<!-- NAVBAR- -->
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav pull-left">
+                <a href="#"><img th:src="@{/images/logo.png}" id="logo"></a>
+                <a href="#"><img th:src="@{/images/reap2.png}" id="logo2"></a>
+            </ul>
+
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav dropdown">
+                <li><a href="#" class="active2">Back to Newers World</a></li>
+                <li><a th:href="@{/logindata}" class="active1"><img th:src="@{/images/timer.png}"> Dashboard</a></li>
+                <li><a th:href="@{/Badges}" class="active2"><img th:src="@{/images/star.png}" height="20px" width="20px"> Badges</a>
+                </li>
+                <li><a href="#" class="active2"> <img th:src="@{/images/certi.png}" height="20px" width="20px">
+                    Redeem</a></li>
+                <!-- 	<li><a href="#"> <img src="bell.png" height="25px" width="20px " id="bell"> </a></li> -->
+                <li><a><button class="buttonlogout" onclick="document.getElementById('id01').style.display='block'"><img th:src="${session.image}"  height="45px" width="45px"></button></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!--logout-->
+<div id="id01" class="modal">
+
+    <form class="modal-content animate" th:action="@{/logout}" method="post">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <img th:src="${session.image}" height="230px" width="230px" class="avatar">
+        </div>
+
+        <div class="container">
+            <label><b>Email:</b></label>
+            <!--/*@thymesVar id="emailId" type="java"*/-->
+            <h3 th:text="${session.emailId}" id="loginText"></h3>
+
+            <label><b>Name:</b></label>
+            <h3 th:text="${session.name}" id="paswordText"></h3>
+
+            <button class="buttonlogout1" type="submit">Logout</button>
+
+        </div>
+    </form>
+</div>
+
+<!--logoutends-->
+<!-- right horizontal div -->
+<div id="third1" style="margin-top:120px !important;">
+    <div class="headerdiv">
+        <span class="headerfont"> <img th:src="@{/images/star.png}">  MY BADGES</span>
+    </div>
+
+    <center>
+        <div class="panel panel-primary" style="border:none;">
+
+            <div class="panel-body">
+                <div class="badge-content">
+                    <div class="badge-content-left">
+                        <img th:src="${session.image}" height="100px" width="100px" alt="">
+                    </div>
+
+                    <div class="badge-content-right">
+                        <!--/*@thymesVar id="user" type="java"*/-->
+                        <h4 id="mybadge1" ><a href="#" class="newer_board_user" data-renderedthrough="rightPanel" th:text="${session.name}">
+
+                        </a></h4>
+                        <span>
+                            <img th:src="@{/images/goldstar.png}" alt="">
+                            <i th:text="${earnedGold}"></i>
+                        </span>
+                        <span>
+                            <img th:src="@{/images/silverstar.png}" alt="">
+                            <i th:text="${earnedSilver}"></i>
+                         </span>
+                        <span>
+                            <img th:src="@{/images/bronzestar.png}" alt="">
+                            <i th:text="${earnedBronze}"></i>
+                        </span>
+                        <br>
+                        <br>
+                        <center>Points:<b th:text="${points}"></b></center>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </center>
+</div>
+
+
+<div id="second1" style="margin-top:120px !important; height: 600px">
+    <div class="headerdiv1">
+        <span class="headerfont"><img th:src="@{/images/star.png}">  Reap Now</span>
+
+    </div>
+
+    <div class="row">
+        <div class="column" >
+            <img th:src="@{/images/redeem1.jpg}" style="width: 150px;height: 150px">
+            <button id="cup" class="btn btn-primary"><span
+                    class="glyphicon glyphicon-shopping-cart">Add</span>
+            </button>
+            <br>
+            <label><i class="fa fa-inr"></i>80</label>
+        </div>
+        <div class="column" >
+            <img th:src="@{/images/redeem2.jpeg}" style="width: 150px;height: 150px">
+            <button id="headphone" class="btn btn-primary"><span
+                    class="glyphicon glyphicon-shopping-cart">Add</span>
+            </button>
+            <br>
+            <label><center><i class="fa fa-inr" ></i>500</center></label>
+        </div>
+        <div class="column" >
+            <img th:src="@{/images/redeem3.jpg}" style="width: 150px;height: 150px">
+
+            <button id="bag" class="btn btn-primary"><span
+                    class="glyphicon glyphicon-shopping-cart">Add</span>
+            </button>
+            <br>
+            <label><center><i class="fa fa-inr"></i>300</center></label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column" >
+            <img th:src="@{/images/redeem4.jpg}" style="width: 150px;height: 150px">
+
+            <button id="pen" class="btn btn-primary"><span
+                    class="glyphicon glyphicon-shopping-cart">Add</span>
+            </button>
+            <br>
+            <label><center><i class="fa fa-inr" aria-hidden="true"></i>50</center></label>
+        </div>
+        <div class="column" >
+            <img th:src="@{/images/redeem5.jpeg}" style="width: 150px;height: 150px">
+
+            <button id="folder" class="btn btn-primary"><span
+                    class="glyphicon glyphicon-shopping-cart">Add</span>
+            </button>
+            <br>
+            <label><center><i class="fa fa-inr" aria-hidden="true"></i>250</center></label>
+        </div>
+        <div class="column" >
+            <img th:src="@{/images/redeem6.jpg}" style="width: 150px;height: 150px">
+
+            <button id="pendrive" class="btn btn-primary"><span
+                    class="glyphicon glyphicon-shopping-cart">Add</span>
+            </button>
+            <br>
+            <label><center><i class="fa fa-inr" aria-hidden="true"></i>300</center></label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column" >
+            <img th:src="@{/images/redeem7.jpg}" style="width: 150px;height: 150px">
+
+            <button id="wallet" class="btn btn-primary"><span
+                    class="glyphicon glyphicon-shopping-cart">Add</span>
+            </button>
+            <br>
+            <label><center><i class="fa fa-inr" aria-hidden="true"></i>200</center></label>
+        </div>
+        <div class="column" >
+            <img th:src="@{/images/redeem8.jpg}" style="width: 150px;height: 150px">
+
+            <button id="sipper" class="btn btn-primary"><span
+                    class="glyphicon glyphicon-shopping-cart">Add</span>
+            </button>
+            <br>
+            <label><center><i class="fa fa-inr" aria-hidden="true"></i>350</center></label>
+        </div>
+
+        <div class="column" >
+            <img th:src="@{/images/redeem9.jpeg}" style="width: 150px;height: 150px">
+
+            <button id="cover" class="btn btn-primary"><span
+                    class="glyphicon glyphicon-shopping-cart">Add</span>
+            </button>
+            <br>
+            <label><center><i class="fa fa-inr" aria-hidden="true"></i>150</center></label>
+        </div>
+    </div>
+
+
+</div>
+<div id="forth" style="margin-top:120px !important;">
+    <div class="headerdiv">
+        <span class="headerfont"> <img th:src="@{/images/star.png}">Bag</span>
+    </div>
+
+    <center>
+        <div class="panel panel-primary" id="cart" style="border:none;">
+            <span style="">Item</span>
+
+            <span style="text-align: right">Subtotal</span>
+            <br>
+
+
+        </div>
+        <br>
+        <div id="total">
+            <span>Total:</span>
+            <span id="cartTotal"></span>
+            <br>
+            <button id="placeOrder" type="submit">PlaceOrder</button>
+        </div>
+    </center>
+</div>
+
+
+
+
+</div>
+
+
+</div>
+
+<!--  <script type="text/javascript" src="reap.js"></script>
+-->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+<!--<div class="col-lg-4 col-md-4">
+    <input type="text" class="select-newer"
+           placeholder="Select a Newer"
+           required="required" id="newer" autocomplete="on">
+
+    <span class="select-newer" autocomplete="on">
+              <img th:src="@{/images/newer.png}" alt="">
+            </span>
+</div>-->

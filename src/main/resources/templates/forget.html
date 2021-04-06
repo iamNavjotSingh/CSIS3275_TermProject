@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css}">
+    <script th:src="@{//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js}"></script>
+    <script th:src="@{//maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js}"></script>
+        <script>
+        $(document).ready(function() {
+            $("#mailSent").on("click", function () {
+                event.preventDefault();
+                var emailId = $("#email").val();
+                console.log("emailid is " + emailId);
+
+                $.ajax({
+                    url: "/forgot",
+                    method: "post",
+                    data: {"emailId": emailId},
+
+                    success: function (data) {
+                        if(data==1)
+                        {
+                            alert("Token number is sent to your mail sccessfully !");
+                            location.assign("/passwordUpdation");
+                        }
+                        else
+                        {
+                         alert("Email id does not exists");
+                         location.reload(true);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="modal-body">
+    <!-- <p>Invitation Sent Successfully!</p> -->
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <form class="form-horizontal" autocomplete="off">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Email:</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="email"
+                               placeholder="abc@tothenew.com"
+                               name="email" required>
+                    </div>
+                    <button type="submit" id="mailSent">Click</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
