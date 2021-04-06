@@ -4,7 +4,7 @@ public class ReapApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		System.out.println("This test works");
+		System.out.println("This test works - kovid");
 	}
 
 }
