@@ -80,19 +80,11 @@ public class UserController {
         }
         registration.setPoints(0);
         Role user = new Role("user", 3, 2, 1);
-        /*Role admin=new Role("admin");
-        */
-        /*Role practiceHead=new Role("Practice Head",9,6,3);
-        Role supervisior=new Role("Practice Head",6,3,2);
-        */
-
         List<Role> roleList = new ArrayList<>();
         roleList.add(user);
 
         registration.setRoles(roleList);
         roleService.insert(user);
-        /*roleService.insert(admin);
-*/
         if (registration.getRoles().contains("Practice Head")) {
             registration.setCurrentBadgeGold(9);
             registration.setCurrentBadgeSilver(6);
@@ -191,22 +183,11 @@ public class UserController {
                 modelAndView.addObject("earnedBronze", recognitionService.getEarned((String) httpSession.getAttribute("emailId"), "Bronze"));
                 modelAndView.addObject("recognitionlist", recognitionService.getList());
                 modelAndView.addObject("recognition", new Recognition());
-
-                //httpSession.setAttribute("gold",registration.getCurrentBadgeGold());
-                //httpSession.setAttribute("silver",registration.getCurrentBadgeSilver());
-                //httpSession.setAttribute("bronze",registration.getCurrentBadgebronze());
-                //httpSession.setAttribute("earnedGold",recognitionService.getEarned(email,"Gold"));
-                //httpSession.setAttribute("earnedSilver",recognitionService.getEarned(email,"Silver"));
-                //httpSession.setAttribute("earnedBronze",recognitionService.getEarned(email,"Bronze"));
                 modelAndView.addObject("recognition", new Recognition());
                 out.println(httpSession.getAttribute("emailId"));
                 return modelAndView;
             } else if(adminflag==0 && userflag == 1) {
                 ModelAndView modelAndView = new ModelAndView("UserDashboard");
-                /*modelAndView.addObject("image","/images/"+registration.getFirstName()+".jpeg");
-                modelAndView.addObject("name",registration.getFirstName()+" "+registration.getLastName());
-                modelAndView.addObject("list",registrationService.getDetails(registration.getEmail()));
-                modelAndView.addObject("email",registration.getEmail());*/
                 modelAndView.addObject("gold", registration.getCurrentBadgeGold());
                 modelAndView.addObject("silver", registration.getCurrentBadgeSilver());
                 modelAndView.addObject("bronze", registration.getCurrentBadgebronze());
@@ -215,13 +196,6 @@ public class UserController {
                 modelAndView.addObject("earnedBronze", recognitionService.getEarned((String) httpSession.getAttribute("emailId"), "Bronze"));
                 modelAndView.addObject("recognitionlist", recognitionService.getList());
                 modelAndView.addObject("recognition", new Recognition());
-
-                //httpSession.setAttribute("gold",registration.getCurrentBadgeGold());
-                //httpSession.setAttribute("silver",registration.getCurrentBadgeSilver());
-                //httpSession.setAttribute("bronze",registration.getCurrentBadgebronze());
-                //httpSession.setAttribute("earnedGold",recognitionService.getEarned(email,"Gold"));
-                //httpSession.setAttribute("earnedSilver",recognitionService.getEarned(email,"Silver"));
-                //httpSession.setAttribute("earnedBronze",recognitionService.getEarned(email,"Bronze"));
                 modelAndView.addObject("recognition", new Recognition());
                 return modelAndView;
             }
@@ -272,10 +246,6 @@ public class UserController {
                     }
                     if (flag == 2) {
                         ModelAndView modelAndView = new ModelAndView("AdminWithBadgeDashboard");
-                    /*modelAndView.addObject("image", "/images/" + registration.getFirstName() + ".jpeg");
-                    modelAndView.addObject("name", registration.getFirstName() + " " + registration.getLastName());
-                    modelAndView.addObject("list", registrationService.getDetails(registration.getEmail()));
-                    modelAndView.addObject("email", registration.getEmail());*/
                         modelAndView.addObject("gold", registration.getCurrentBadgeGold());
                         modelAndView.addObject("silver", registration.getCurrentBadgeSilver());
                         modelAndView.addObject("bronze", registration.getCurrentBadgebronze());
@@ -288,10 +258,6 @@ public class UserController {
                         return modelAndView;
                     } else {
                         ModelAndView modelAndView = new ModelAndView("UserDashboard");
-                /*modelAndView.addObject("image","/images/"+registration.getFirstName()+".jpeg");
-                modelAndView.addObject("name",registration.getFirstName()+" "+registration.getLastName());
-                modelAndView.addObject("list",registrationService.getDetails(registration.getEmail()));
-                modelAndView.addObject("email",registration.getEmail());*/
                         modelAndView.addObject("gold", registration.getCurrentBadgeGold());
                         modelAndView.addObject("silver", registration.getCurrentBadgeSilver());
                         modelAndView.addObject("bronze", registration.getCurrentBadgebronze());
@@ -300,13 +266,6 @@ public class UserController {
                         modelAndView.addObject("earnedBronze", recognitionService.getEarned((String) httpSession.getAttribute("emailId"), "Bronze"));
                         modelAndView.addObject("recognitionlist", recognitionService.getList());
                         modelAndView.addObject("recognition", new Recognition());
-
-                        //httpSession.setAttribute("gold",registration.getCurrentBadgeGold());
-                        //httpSession.setAttribute("silver",registration.getCurrentBadgeSilver());
-                        //httpSession.setAttribute("bronze",registration.getCurrentBadgebronze());
-                        //httpSession.setAttribute("earnedGold",recognitionService.getEarned(email,"Gold"));
-                        //httpSession.setAttribute("earnedSilver",recognitionService.getEarned(email,"Silver"));
-                        //httpSession.setAttribute("earnedBronze",recognitionService.getEarned(email,"Bronze"));
                         modelAndView.addObject("recognition", new Recognition());
                         return modelAndView;
                     }
@@ -344,10 +303,6 @@ public class UserController {
                     }
                     if (flag == 2) {
                         ModelAndView modelAndView = new ModelAndView("AdminWithBadgeDashboard");
-                    /*modelAndView.addObject("image", "/images/" + registration.getFirstName() + ".jpeg");
-                    modelAndView.addObject("name", registration.getFirstName() + " " + registration.getLastName());
-                    modelAndView.addObject("list", registrationService.getDetails(registration.getEmail()));
-                    modelAndView.addObject("email", registration.getEmail());*/
                         modelAndView.addObject("gold", registration.getCurrentBadgeGold());
                         modelAndView.addObject("silver", registration.getCurrentBadgeSilver());
                         modelAndView.addObject("bronze", registration.getCurrentBadgebronze());
@@ -360,10 +315,6 @@ public class UserController {
                         return modelAndView;
                     } else {
                         ModelAndView modelAndView = new ModelAndView("UserDashboard");
-                /*modelAndView.addObject("image","/images/"+registration.getFirstName()+".jpeg");
-                modelAndView.addObject("name",registration.getFirstName()+" "+registration.getLastName());
-                modelAndView.addObject("list",registrationService.getDetails(registration.getEmail()));
-                modelAndView.addObject("email",registration.getEmail());*/
                         modelAndView.addObject("gold", registration.getCurrentBadgeGold());
                         modelAndView.addObject("silver", registration.getCurrentBadgeSilver());
                         modelAndView.addObject("bronze", registration.getCurrentBadgebronze());
@@ -372,13 +323,6 @@ public class UserController {
                         modelAndView.addObject("earnedBronze", recognitionService.getEarned((String) httpSession.getAttribute("emailId"), "Bronze"));
                         modelAndView.addObject("recognitionlist", recognitionService.getFilterList(startdate, enddate));
                         modelAndView.addObject("recognition", new Recognition());
-
-                        //httpSession.setAttribute("gold",registration.getCurrentBadgeGold());
-                        //httpSession.setAttribute("silver",registration.getCurrentBadgeSilver());
-                        //httpSession.setAttribute("bronze",registration.getCurrentBadgebronze());
-                        //httpSession.setAttribute("earnedGold",recognitionService.getEarned(email,"Gold"));
-                        //httpSession.setAttribute("earnedSilver",recognitionService.getEarned(email,"Silver"));
-                        //httpSession.setAttribute("earnedBronze",recognitionService.getEarned(email,"Bronze"));
                         modelAndView.addObject("recognition", new Recognition());
                         return modelAndView;
                     }
@@ -399,7 +343,6 @@ public class UserController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public String logout() {
-        //ModelAndView modelAndView =new ModelAndView("Registration");
 
         Registration registration=registrationService.getUser((String) httpSession.getAttribute("emailId"));
         List<OrderDetail> listForOrderPLacing = orderDetailService.getListForOrderPLacing(registration, 0);
@@ -456,11 +399,3 @@ if(!listForOrderPLacing.isEmpty())
             }
         }
     }
-
-
-
-   /* @GetMapping("/logindata")
-    public String backtohome(){
-        return "redirect:/";
-    }*/
-

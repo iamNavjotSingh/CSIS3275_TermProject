@@ -92,17 +92,9 @@ public class BadgeController {
         registration.setPoints(points);
         registrationService.insert(registration);
         registrationService.insert(registration1);
-        /*SimpleMailMessage passwordResetEmail = new SimpleMailMessage();
-        passwordResetEmail.setTo(listid.getUserEmail());
-        passwordResetEmail.setSubject("Badge revoked");
-        passwordResetEmail.setText("Badge has been revoked by the user as it was given by mistake!!.Hence your points are also deducted");
-        emailUtil.sendEmail(passwordResetEmail);
-        SimpleMailMessage passwordResetEmail1 = new SimpleMailMessage();
-        passwordResetEmail1.setTo(registration1.getEmail());
-        passwordResetEmail1.setSubject("Badge revoked");
-        passwordResetEmail1.setText("Badge has been successfully revoked");
-        emailUtil.sendEmail(passwordResetEmail1);*/
-
         return 1;
+    }
+    public int square(int x) {
+        return x*x;
     }
 }

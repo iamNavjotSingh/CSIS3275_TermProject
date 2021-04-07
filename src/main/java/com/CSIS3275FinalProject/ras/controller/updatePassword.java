@@ -35,13 +35,13 @@ public class updatePassword {
     @PostMapping(value = "/forgot")
     @ResponseBody
     public int processForgotPasswordForm(@RequestParam("emailId") String email) {
-// Lookup user in database by e-mail
+    // Lookup user in database by e-mail
         Registration user = registrationService.findByEmail(email);
         System.out.println("from controller"+user);
         if (user==null) {
             return 0;
         } else {
-// Email message
+    // Email message
             Token token=new Token();
             int randomPIN = (int)(Math.random()*9000)+1000;
             String PINString = String.valueOf(randomPIN);
