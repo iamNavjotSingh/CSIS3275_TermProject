@@ -39,4 +39,12 @@ public class ReapApplicationTests {
 		int output = bg.square(7);
 		assertEquals(49, output);
 	}
+
+	/* //This test will fail as the value entered is incorrect :)
+	@Test
+	public void test5 () {
+		BadgeController bg = new BadgeController();
+		int output = bg.square(10);
+		assertEquals(50, output);
+	} */
 }
